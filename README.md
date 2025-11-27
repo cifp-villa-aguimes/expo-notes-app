@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+# 📱 Expo Notes App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación de notas multiplataforma desarrollada con **Expo / React Native + TypeScript**.
 
-## Get started
+> Proyecto didáctico del módulo **PGL – DAM** como ejercicio integrador de arquitectura, estado, persistencia y APIs.
 
-1. Install dependencies
+## 🎯 Objetivo
 
-   ```bash
-   npm install
-   ```
+Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la misma filosofía arquitectónica pero adaptada a React Native.
 
-2. Start the app
+## 📊 Estado del Proyecto
 
-   ```bash
-   npx expo start
-   ```
+| Versión | Estado       | Descripción                 |
+| ------- | ------------ | --------------------------- |
+| v0.0.0  | 🔲 Pendiente | Limpieza y base mínima      |
+| v0.1.0  | 🔲 Pendiente | Navegación + Login          |
+| v0.2.0  | 🔲 Pendiente | Estado global (Zustand)     |
+| v0.3.0  | 🔲 Pendiente | Persistencia (AsyncStorage) |
+| v0.4.0  | 🔲 Pendiente | SQLite                      |
+| v0.5.0  | 🔲 Pendiente | API + Sensores              |
 
-In the output, you'll find options to open the app in a
+## 🛠️ Stack Tecnológico
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Tecnología   | Versión | Uso                |
+| ------------ | ------- | ------------------ |
+| Expo SDK     | 54      | Framework          |
+| React Native | 0.81.5  | UI nativa          |
+| TypeScript   | 5.9.2   | Tipado             |
+| Expo Router  | 6.0.15  | Navegación         |
+| Zustand      | -       | Estado global      |
+| AsyncStorage | -       | Persistencia prefs |
+| expo-sqlite  | -       | Persistencia notas |
+| Axios        | -       | Cliente HTTP       |
+| expo-sensors | -       | Acelerómetro       |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## ✨ Funcionalidades Planeadas
 
-## Get a fresh project
+- **Login** con nickname + captcha matemático
+- **CRUD de notas** con swipe-to-delete
+- **Favoritos** con filtrado
+- **Ajustes**: tema, orden, perfil
+- **API de citas** para crear notas inspiracionales
+- **Shake-to-create**: agitar para nueva nota
 
-When you're ready, run:
+## 📁 Estructura (Objetivo Final)
 
-```bash
-npm run reset-project
+```
+expo-notes-app/
+├── app/                      # Rutas (Expo Router)
+│   ├── _layout.tsx           # Layout raíz
+│   ├── index.tsx             # Login
+│   ├── (tabs)/               # Tabs principales
+│   │   ├── index.tsx         # Home
+│   │   ├── favorites.tsx     # Favoritos
+│   │   └── settings.tsx      # Ajustes
+│   └── note/[id].tsx         # Detalle nota
+│
+├── src/
+│   ├── components/           # Componentes
+│   │   ├── ui/               # Button, Input, Card
+│   │   ├── notes/            # NoteCard, NoteForm
+│   │   └── login/            # MathCaptcha
+│   ├── stores/               # Zustand stores
+│   ├── services/             # API, DB, Sensors
+│   ├── hooks/                # Custom hooks
+│   ├── types/                # TypeScript interfaces
+│   ├── utils/                # Validación, formatters
+│   └── theme/                # Colores, spacing
+│
+└── assets/                   # Imágenes y recursos
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🚀 Inicio Rápido
 
-## Learn more
+```bash
+# Instalar dependencias
+npm install
 
-To learn more about developing your project with Expo, look at the following resources:
+# Iniciar servidor de desarrollo
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Atajos de teclado
 
-## Join the community
+- **a** → Android
+- **i** → iOS Simulator
+- **w** → Web
 
-Join our community of developers creating universal apps.
+## 📚 Documentación
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [`EXPO_NOTES_APP_PLAN.md`](./EXPO_NOTES_APP_PLAN.md) – Plan general del proyecto
+- [`PLAN_VERSIONES.md`](./PLAN_VERSIONES.md) – Plan detallado por versión
+
+## 🔗 Referencias
+
+- [Expo Documentation](https://docs.expo.dev/)
+- [Expo Router](https://docs.expo.dev/router/introduction/)
+- [Zustand](https://zustand-demo.pmnd.rs/)
+- [Proyecto Compose original](https://github.com/cifp-villa-aguimes/jetpack-notes-app)
