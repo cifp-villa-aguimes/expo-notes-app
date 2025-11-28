@@ -18,20 +18,22 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | v0.3.0  | 🔲 Pendiente  | Persistencia (AsyncStorage) |
 | v0.4.0  | 🔲 Pendiente  | SQLite                      |
 | v0.5.0  | 🔲 Pendiente  | API + Sensores              |
+| v0.5.5  | 🔲 Pendiente  | Multimedia + Animaciones    |
 
 ## 🛠️ Stack Tecnológico
 
-| Tecnología   | Versión | Uso                |
-| ------------ | ------- | ------------------ |
-| Expo SDK     | 54      | Framework          |
-| React Native | 0.81.5  | UI nativa          |
-| TypeScript   | 5.9.2   | Tipado             |
-| Expo Router  | 6.0.15  | Navegación         |
-| Zustand      | -       | Estado global      |
-| AsyncStorage | -       | Persistencia prefs |
-| expo-sqlite  | -       | Persistencia notas |
-| Axios        | -       | Cliente HTTP       |
-| expo-sensors | -       | Acelerómetro       |
+| Tecnología        | Versión | Uso                |
+| ----------------- | ------- | ------------------ |
+| Expo SDK          | 54      | Framework          |
+| React Native      | 0.81.5  | UI nativa          |
+| TypeScript        | 5.9.2   | Tipado             |
+| Expo Router       | 6.0.15  | Navegación         |
+| Zustand           | -       | Estado global      |
+| AsyncStorage      | -       | Persistencia prefs |
+| expo-sqlite       | -       | Persistencia notas |
+| Axios             | -       | Cliente HTTP       |
+| expo-sensors      | -       | Acelerómetro       |
+| expo-image-picker | -       | Captura multimedia |
 
 ## ✨ Funcionalidades Planeadas
 
@@ -41,6 +43,8 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 - **Ajustes**: tema, orden, perfil
 - **API de citas** para crear notas inspiracionales
 - **Shake-to-create**: agitar para nueva nota
+- **Imágenes en notas**: captura de cámara/galería
+- **Animaciones**: transiciones fluidas con Reanimated
 
 ## 📁 Estructura (Objetivo Final)
 

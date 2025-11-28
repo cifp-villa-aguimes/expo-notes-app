@@ -98,7 +98,7 @@ git push origin main --tags
 
 #### 2. Tipos TypeScript
 
-- [ ] `src/types/note.ts` → `Note`, `NoteFormData`
+- [ ] `src/types/note.ts` → `Note`, `NoteFormData` (incluir `imageUrl?: string`)
 - [ ] `src/types/user.ts` → `User`
 - [ ] `src/types/settings.ts` → `Settings`, `SortBy`, `ThemeMode`
 
@@ -208,6 +208,7 @@ npm install zustand
 
 - [ ] `src/components/notes/NoteCard.tsx`
   - Muestra título, preview del body, fecha, icono favorito
+  - Imagen opcional (si `imageUrl` existe)
   - Navegación al detalle al pulsar
 - [ ] `src/components/notes/SwipeableNoteCard.tsx`
   - Extiende NoteCard
@@ -422,28 +423,34 @@ npx expo install expo-sensors expo-haptics
   - Estado: `quote`, `isLoading`, `error`
   - Acción: `fetchQuote()`
 
-#### 4. Botón "Añadir nota desde cita"
+#### 4. API de imágenes aleatorias
+
+- [ ] `src/services/api/imagesApi.ts`
+  - `getRandomImageUrl(): string` → Lorem Picsum (`https://picsum.photos/400/200`)
+  - Alternativa: Unsplash Source API
+
+#### 5. Botón "Añadir nota desde cita"
 
 - [ ] Añadir en Ajustes o Home
 - [ ] Mostrar loading mientras carga
-- [ ] Si éxito → crear nota con título=cita, body="— Autor"
+- [ ] Si éxito → crear nota con título=cita, body="— Autor", imageUrl=imagen aleatoria
 - [ ] Si error → mostrar Toast/mensaje
 
-#### 5. Detector de shake
+#### 6. Detector de shake
 
 - [ ] `src/services/sensors/shakeDetector.ts`
   - Lógica de detección basada en acelerómetro
   - Umbral configurable
   - Debounce para evitar múltiples disparos
 
-#### 6. Hook useShakeDetector
+#### 7. Hook useShakeDetector
 
 - [ ] `src/hooks/useShakeDetector.ts`
   - Props: `{ enabled: boolean; onShake: () => void }`
   - Suscripción al acelerómetro
   - Dispara `onShake` + haptic feedback
 
-#### 7. Integración en UI
+#### 8. Integración en UI
 
 - [ ] Toggle `shakeEnabled` en Ajustes
 - [ ] Conectar `useShakeDetector` en Home
@@ -455,6 +462,104 @@ npx expo install expo-sensors expo-haptics
 - Shake-to-create funcionando
 - Feedback háptico al detectar shake
 - Toggle para activar/desactivar shake
+
+---
+
+## 🎬 v0.5.5 – Multimedia (Imágenes y Animaciones)
+
+**Objetivo**: Captura de imágenes y animaciones avanzadas para cubrir RA3.
+
+### Flujo Git
+
+```bash
+git checkout -b v0.5.5-multimedia
+# ... trabajo ...
+git add . && git commit -m "v0.5.5: Multimedia - imágenes y animaciones"
+git checkout main && git merge v0.5.5-multimedia
+git tag v0.5.5
+git push origin main --tags
+```
+
+### Dependencias
+
+```bash
+npx expo install expo-image-picker
+```
+
+### Tareas
+
+#### 1. Permisos de cámara y galería
+
+- [ ] Configurar permisos en `app.json`
+  ```json
+  "plugins": [
+    [
+      "expo-image-picker",
+      {
+        "photosPermission": "Permitir acceso a fotos para añadir imágenes a las notas",
+        "cameraPermission": "Permitir acceso a la cámara para tomar fotos"
+      }
+    ]
+  ]
+  ```
+- [ ] Hook `src/hooks/useImagePicker.ts`
+  - `pickFromGallery(): Promise<string | null>`
+  - `takePhoto(): Promise<string | null>`
+  - Manejo de permisos y errores
+
+#### 2. Selector de imagen en NoteForm
+
+- [ ] Componente `src/components/notes/ImagePicker.tsx`
+  - Botones: "Tomar foto" / "Elegir de galería"
+  - Preview de imagen seleccionada
+  - Botón para eliminar imagen
+- [ ] Integrar en `NoteForm`
+  - Campo opcional de imagen
+  - Mostrar preview si hay imagen
+
+#### 3. Visualización de imágenes
+
+- [ ] Mejorar `NoteCard` con imagen
+  - Usar `expo-image` con placeholder/loading
+  - Manejo de errores de carga (imagen por defecto)
+- [ ] Pantalla Detalle con imagen ampliada
+  - Imagen a pantalla completa al pulsar
+  - Gesto de zoom (opcional)
+
+#### 4. Animaciones con Reanimated
+
+- [ ] Animación de entrada en lista de notas
+  - FadeIn + SlideIn escalonado
+- [ ] Animación al añadir/eliminar nota
+  - Layout animation
+- [ ] Animación en toggle favorito
+  - Scale + rotate del icono estrella
+- [ ] Transición de imagen en detalle
+  - Shared element transition (opcional)
+
+#### 5. Feedback de acciones
+
+- [ ] Animación de confirmación al guardar
+- [ ] Animación de swipe-to-delete mejorada
+- [ ] Micro-interacciones en botones
+
+### Resultado esperado
+
+- Captura de fotos desde cámara
+- Selección de imágenes de galería
+- Imágenes en notas (manuales y desde API)
+- Animaciones fluidas en toda la app
+- Permisos correctamente configurados
+
+### Criterios RA3 cubiertos
+
+| Criterio                     | Cómo se cubre                       |
+| ---------------------------- | ----------------------------------- |
+| b) Captura y almacenamiento  | expo-image-picker                   |
+| d) Procesar datos multimedia | expo-image (resize, cache)          |
+| e) Eventos y excepciones     | onLoad, onError, permisos           |
+| f) Animaciones               | Reanimated en listas y transiciones |
+| g) Reproducir multimedia     | Visualización de imágenes           |
 
 ---
 
@@ -484,6 +589,7 @@ npx expo install expo-sensors expo-haptics
 | v0.3.0  | `v0.3.0-async-storage` | Persistencia prefs | `async-storage`                         |
 | v0.4.0  | `v0.4.0-sqlite`        | Persistencia notas | `expo-sqlite`                           |
 | v0.5.0  | `v0.5.0-api-sensors`   | API + Sensores     | `axios`, `expo-sensors`, `expo-haptics` |
+| v0.5.5  | `v0.5.5-multimedia`    | Imágenes + Animac. | `expo-image-picker`                     |
 
 ---
 
