@@ -1,6 +1,6 @@
 import { NoteForm, SwipeableNoteCard } from "@/src/components/notes";
 import { BottomSheet, Button, EmptyState, FAB } from "@/src/components/ui";
-import { useTheme } from "@/src/hooks";
+import { useShakeDetector, useTheme } from "@/src/hooks";
 import { useNotesStore, useSettingsStore, useUserStore } from "@/src/stores";
 import { BorderRadius, Spacing, Typography } from "@/src/theme";
 import type { Note, NoteFormData } from "@/src/types";
@@ -23,6 +23,7 @@ export default function HomeScreen() {
   const sortBy = useSettingsStore((s) => s.sortBy);
   const welcomeShown = useSettingsStore((s) => s.welcomeShown);
   const setWelcomeShown = useSettingsStore((s) => s.setWelcomeShown);
+  const shakeEnabled = useSettingsStore((s) => s.shakeEnabled);
 
   // Suscribirse a notes directamente para que re-renderice
   const allNotes = useNotesStore((s) => s.notes);
@@ -71,6 +72,12 @@ export default function HomeScreen() {
     setFormKey((k) => k + 1); // Fuerza remount del formulario
     setIsFormVisible(true);
   }, []);
+
+  // Shake-to-create: abre el formulario al agitar el dispositivo
+  useShakeDetector({
+    enabled: shakeEnabled,
+    onShake: openForm,
+  });
 
   const handleAddNote = useCallback(
     (formData: NoteFormData) => {

@@ -1,6 +1,7 @@
 import { Button, Card, Input } from "@/src/components/ui";
 import { useTheme } from "@/src/hooks";
-import { useSettingsStore, useUserStore } from "@/src/stores";
+import { getRandomImageUrl, getRandomQuote } from "@/src/services";
+import { useNotesStore, useSettingsStore, useUserStore } from "@/src/stores";
 import { Spacing, Typography } from "@/src/theme";
 import type { SortBy, ThemeMode } from "@/src/types";
 import { NICKNAME_MAX_LENGTH, validateNickname } from "@/src/utils";
@@ -32,12 +33,22 @@ export default function SettingsScreen() {
   const { colors } = useTheme();
 
   const { name, updateName, logout } = useUserStore();
-  const { sortBy, theme, welcomeShown, setSortBy, setTheme, setWelcomeShown } =
-    useSettingsStore();
+  const {
+    sortBy,
+    theme,
+    welcomeShown,
+    shakeEnabled,
+    setSortBy,
+    setTheme,
+    setWelcomeShown,
+    setShakeEnabled,
+  } = useSettingsStore();
+  const { addNote } = useNotesStore();
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [newName, setNewName] = useState(name);
   const [nameError, setNameError] = useState<string | undefined>();
+  const [isLoadingQuote, setIsLoadingQuote] = useState(false);
 
   const handleNameChange = (value: string) => {
     setNewName(value);
@@ -81,6 +92,32 @@ export default function SettingsScreen() {
         },
       ]
     );
+  };
+
+  const handleCreateFromQuote = async () => {
+    setIsLoadingQuote(true);
+    try {
+      const { quote, author } = await getRandomQuote();
+      const imageUrl = getRandomImageUrl();
+
+      await addNote(
+        {
+          title: quote,
+          body: `\u2014 ${author}`,
+          imageUrl,
+        },
+        name
+      );
+
+      Alert.alert("Éxito", "Nota creada desde cita");
+    } catch {
+      Alert.alert(
+        "Error",
+        "No se pudo obtener la cita. Int\u00e9ntalo de nuevo."
+      );
+    } finally {
+      setIsLoadingQuote(false);
+    }
   };
 
   return (
@@ -230,10 +267,58 @@ export default function SettingsScreen() {
         ))}
       </Card>
 
+      {/* Acciones */}
+      <Card style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+          Acciones
+        </Text>
+
+        <Button
+          title={isLoadingQuote ? "Cargando..." : "✨ Crear nota desde cita"}
+          onPress={handleCreateFromQuote}
+          disabled={isLoadingQuote}
+          variant="outline"
+          fullWidth
+        />
+      </Card>
+
       {/* Otros */}
       <Card style={styles.section}>
         <Text style={[styles.sectionTitle, { color: colors.text }]}>Otros</Text>
 
+        {/* Toggle Shake-to-create */}
+        <TouchableOpacity
+          style={styles.optionRow}
+          onPress={() => setShakeEnabled(!shakeEnabled)}
+        >
+          <View style={styles.optionInfo}>
+            <Ionicons
+              name="phone-portrait-outline"
+              size={20}
+              color={colors.icon}
+            />
+            <Text style={[styles.optionLabel, { color: colors.text }]}>
+              Shake para crear nota
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.toggle,
+              {
+                backgroundColor: shakeEnabled ? colors.primary : colors.border,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.toggleKnob,
+                shakeEnabled && styles.toggleKnobActive,
+              ]}
+            />
+          </View>
+        </TouchableOpacity>
+
+        {/* Reset bienvenida */}
         <TouchableOpacity
           style={styles.optionRow}
           onPress={() => setWelcomeShown(false)}
@@ -345,5 +430,21 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
+  },
+  toggle: {
+    width: 50,
+    height: 28,
+    borderRadius: 14,
+    padding: 2,
+    justifyContent: "center",
+  },
+  toggleKnob: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
+  },
+  toggleKnobActive: {
+    alignSelf: "flex-end",
   },
 });

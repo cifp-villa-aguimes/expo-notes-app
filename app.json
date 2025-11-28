@@ -44,6 +44,17 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "developmentClient": {
+      "silentLaunch": true
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
     }
   }
 }
