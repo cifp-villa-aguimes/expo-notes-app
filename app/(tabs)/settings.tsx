@@ -32,7 +32,8 @@ export default function SettingsScreen() {
   const { colors } = useTheme();
 
   const { name, updateName, logout } = useUserStore();
-  const { sortBy, theme, setSortBy, setTheme } = useSettingsStore();
+  const { sortBy, theme, welcomeShown, setSortBy, setTheme, setWelcomeShown } =
+    useSettingsStore();
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [newName, setNewName] = useState(name);
@@ -227,6 +228,34 @@ export default function SettingsScreen() {
             </View>
           </TouchableOpacity>
         ))}
+      </Card>
+
+      {/* Otros */}
+      <Card style={styles.section}>
+        <Text style={[styles.sectionTitle, { color: colors.text }]}>Otros</Text>
+
+        <TouchableOpacity
+          style={styles.optionRow}
+          onPress={() => setWelcomeShown(false)}
+          disabled={!welcomeShown}
+        >
+          <View style={styles.optionInfo}>
+            <Ionicons name="refresh-outline" size={20} color={colors.icon} />
+            <Text
+              style={[
+                styles.optionLabel,
+                {
+                  color: welcomeShown ? colors.text : colors.textTertiary,
+                },
+              ]}
+            >
+              Mostrar bienvenida de nuevo
+            </Text>
+          </View>
+          {!welcomeShown && (
+            <Ionicons name="checkmark" size={20} color={colors.success} />
+          )}
+        </TouchableOpacity>
       </Card>
 
       {/* Cerrar sesión */}

@@ -15,7 +15,7 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | v0.0.0  | ✅ Completado | Limpieza y base mínima      |
 | v0.1.0  | ✅ Completado | Navegación + Login          |
 | v0.2.0  | ✅ Completado | Estado global (Zustand)     |
-| v0.3.0  | 🔲 Pendiente  | Persistencia (AsyncStorage) |
+| v0.3.0  | ✅ Completado | Persistencia (AsyncStorage) |
 | v0.4.0  | 🔲 Pendiente  | SQLite                      |
 | v0.5.0  | 🔲 Pendiente  | API + Sensores              |
 | v0.5.5  | 🔲 Pendiente  | Multimedia + Animaciones    |
@@ -28,8 +28,8 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | React Native      | 0.81.5  | UI nativa          |
 | TypeScript        | 5.9.2   | Tipado             |
 | Expo Router       | 6.0.15  | Navegación         |
-| Zustand           | -       | Estado global      |
-| AsyncStorage      | -       | Persistencia prefs |
+| Zustand           | 5.0.8   | Estado global      |
+| AsyncStorage      | 2.1.2   | Persistencia prefs |
 | expo-sqlite       | -       | Persistencia notas |
 | Axios             | -       | Cliente HTTP       |
 | expo-sensors      | -       | Acelerómetro       |
