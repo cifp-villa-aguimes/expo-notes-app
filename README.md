@@ -30,7 +30,7 @@ Proyecto didáctico del módulo **PGL – DAM** que recrea la **NotesApp** de Je
 - CRUD completo (Crear, Leer, Actualizar, Eliminar)
 - Swipe-to-delete con animación
 - Sistema de favoritos
-- Ordenación por fecha o alfabético
+- Ordenación por fecha, alfabético o favoritos primero
 - Imágenes adjuntas (cámara/galería)
 - Persistencia en SQLite
 
@@ -278,7 +278,7 @@ EXPO_PUBLIC_API_TIMEOUT=10000
 
 - Editar nombre de usuario
 - Cambiar tema (Light/Dark/Sistema)
-- Ordenar notas (fecha/alfabético)
+- Ordenar notas (fecha/alfabético/favoritos)
 - Crear nota desde cita aleatoria
 - Toggle shake-to-create
 - Resetear bienvenida
