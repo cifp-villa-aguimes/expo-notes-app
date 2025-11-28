@@ -3,7 +3,8 @@ import { useTheme } from "@/src/hooks";
 import { Spacing, Typography } from "@/src/theme";
 import type { Note } from "@/src/types";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image } from "expo-image";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface NoteCardProps {
   note: Note;
@@ -33,7 +34,9 @@ export function NoteCard({ note, onPress, onFavoritePress }: NoteCardProps) {
           <Image
             source={{ uri: note.imageUrl }}
             style={styles.image}
-            resizeMode="cover"
+            contentFit="cover"
+            transition={200}
+            placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
           />
         )}
 

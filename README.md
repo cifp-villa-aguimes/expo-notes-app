@@ -18,7 +18,7 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | v0.3.0  | ✅ Completado | Persistencia (AsyncStorage) |
 | v0.4.0  | ✅ Completado | SQLite                      |
 | v0.5.0  | ✅ Completado | API + Sensores              |
-| v0.5.5  | 🔲 Pendiente  | Multimedia + Animaciones    |
+| v0.5.5  | ✅ Completado | Multimedia + Animaciones    |
 
 ## 🛠️ Stack Tecnológico
 
@@ -33,7 +33,7 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | expo-sqlite       | 15.1.3  | Persistencia notas |
 | Axios             | 1.9.0   | Cliente HTTP       |
 | expo-sensors      | 14.1.2  | Acelerómetro       |
-| expo-image-picker | -       | Captura multimedia |
+| expo-image-picker | 16.1.4  | Captura multimedia |
 
 ## ✨ Funcionalidades Planeadas
 

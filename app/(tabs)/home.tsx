@@ -15,6 +15,10 @@ import {
   View,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Animated, {
+  FadeInDown,
+  LinearTransition,
+} from "react-native-reanimated";
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -106,13 +110,20 @@ export default function HomeScreen() {
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: Note }) => (
-      <SwipeableNoteCard
-        note={item}
-        onPress={() => handleNotePress(item)}
-        onFavoritePress={() => handleToggleFavorite(item.id)}
-        onDelete={() => handleDeleteNote(item.id)}
-      />
+    ({ item, index }: { item: Note; index: number }) => (
+      <Animated.View
+        entering={FadeInDown.delay(index * 50)
+          .duration(300)
+          .springify()}
+        layout={LinearTransition.springify().damping(15)}
+      >
+        <SwipeableNoteCard
+          note={item}
+          onPress={() => handleNotePress(item)}
+          onFavoritePress={() => handleToggleFavorite(item.id)}
+          onDelete={() => handleDeleteNote(item.id)}
+        />
+      </Animated.View>
     ),
     [handleNotePress, handleToggleFavorite, handleDeleteNote]
   );

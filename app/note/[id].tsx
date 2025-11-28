@@ -5,11 +5,11 @@ import { useNotesStore } from "@/src/stores";
 import { Spacing, Typography } from "@/src/theme";
 import type { NoteFormData } from "@/src/types";
 import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useCallback, useLayoutEffect, useState } from "react";
 import {
   Alert,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -116,7 +116,9 @@ export default function NoteDetailScreen() {
           <Image
             source={{ uri: note.imageUrl }}
             style={styles.image}
-            resizeMode="cover"
+            contentFit="cover"
+            transition={300}
+            placeholder={{ blurhash: "L6PZfSi_.AyE_3t7t7R**0o#DgR4" }}
           />
         )}
 

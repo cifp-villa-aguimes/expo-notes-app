@@ -4,6 +4,7 @@ import { Spacing, Typography } from "@/src/theme";
 import type { Note, NoteFormData } from "@/src/types";
 import { useEffect, useState } from "react";
 import { StyleSheet, Switch, Text, View } from "react-native";
+import { ImageSelector } from "./ImageSelector";
 
 const TITLE_MAX_LENGTH = 80;
 
@@ -25,6 +26,7 @@ export function NoteForm({
 
   const [title, setTitle] = useState(note?.title ?? "");
   const [body, setBody] = useState(note?.body ?? "");
+  const [imageUrl, setImageUrl] = useState<string | undefined>(note?.imageUrl);
   const [isFavorite, setIsFavorite] = useState(note?.isFavorite ?? false);
   const [titleError, setTitleError] = useState<string | undefined>();
 
@@ -32,6 +34,7 @@ export function NoteForm({
     if (note) {
       setTitle(note.title);
       setBody(note.body);
+      setImageUrl(note.imageUrl);
       setIsFavorite(note.isFavorite);
     }
   }, [note]);
@@ -61,6 +64,7 @@ export function NoteForm({
     onSubmit({
       title: title.trim(),
       body: body.trim(),
+      imageUrl,
       isFavorite,
     });
   };
@@ -99,6 +103,8 @@ export function NoteForm({
           thumbColor={isFavorite ? colors.primary : colors.surface}
         />
       </View>
+
+      <ImageSelector imageUrl={imageUrl} onImageChange={setImageUrl} />
 
       <View style={styles.actions}>
         <Button
