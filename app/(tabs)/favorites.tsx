@@ -2,15 +2,15 @@ import { useTheme } from "@/src/hooks";
 import { Spacing, Typography } from "@/src/theme";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function HomeScreen() {
+export default function FavoritesScreen() {
   const { colors } = useTheme();
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={[styles.emoji]}>📝</Text>
-      <Text style={[styles.title, { color: colors.text }]}>Tus Notas</Text>
+      <Text style={styles.emoji}>⭐</Text>
+      <Text style={[styles.title, { color: colors.text }]}>Favoritos</Text>
       <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-        Aquí aparecerán tus notas
+        Tus notas favoritas aparecerán aquí
       </Text>
       <Text style={[styles.hint, { color: colors.textTertiary }]}>
         (Implementado en v0.2.0)
