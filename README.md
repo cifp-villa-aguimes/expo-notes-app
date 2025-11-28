@@ -14,7 +14,7 @@ Recrear la **NotesApp** de Jetpack Compose en el ecosistema Expo, manteniendo la
 | ------- | ------------- | --------------------------- |
 | v0.0.0  | ✅ Completado | Limpieza y base mínima      |
 | v0.1.0  | ✅ Completado | Navegación + Login          |
-| v0.2.0  | 🔲 Pendiente  | Estado global (Zustand)     |
+| v0.2.0  | ✅ Completado | Estado global (Zustand)     |
 | v0.3.0  | 🔲 Pendiente  | Persistencia (AsyncStorage) |
 | v0.4.0  | 🔲 Pendiente  | SQLite                      |
 | v0.5.0  | 🔲 Pendiente  | API + Sensores              |
