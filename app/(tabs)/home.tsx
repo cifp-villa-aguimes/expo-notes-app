@@ -6,7 +6,14 @@ import { BorderRadius, Spacing, Typography } from "@/src/theme";
 import type { Note, NoteFormData } from "@/src/types";
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function HomeScreen() {
@@ -19,7 +26,13 @@ export default function HomeScreen() {
 
   // Suscribirse a notes directamente para que re-renderice
   const allNotes = useNotesStore((s) => s.notes);
-  const { addNote, deleteNote, toggleFavorite } = useNotesStore();
+  const isLoading = useNotesStore((s) => s.isLoading);
+  const { loadNotes, addNote, deleteNote, toggleFavorite } = useNotesStore();
+
+  // Cargar notas desde SQLite al montar
+  useEffect(() => {
+    loadNotes(sortBy);
+  }, [loadNotes, sortBy]);
 
   // Modal de bienvenida
   const [showWelcome, setShowWelcome] = useState(false);
@@ -111,7 +124,11 @@ export default function HomeScreen() {
           </View>
         )}
 
-        {notes.length === 0 ? (
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={colors.primary} />
+          </View>
+        ) : notes.length === 0 ? (
           <EmptyState
             emoji="📝"
             title="No hay notas"
@@ -176,6 +193,11 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   header: {
     flexDirection: "row",

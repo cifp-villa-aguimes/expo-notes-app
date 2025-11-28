@@ -1,3 +1,4 @@
+import { notesDao } from "@/src/services/database";
 import type { Note, NoteFormData, SortBy } from "@/src/types";
 import { create } from "zustand";
 
@@ -6,14 +7,15 @@ interface NotesState {
   isLoading: boolean;
   error: string | null;
 
-  // Actions
-  addNote: (formData: NoteFormData, userName: string) => void;
-  updateNote: (id: string, formData: Partial<NoteFormData>) => void;
-  deleteNote: (id: string) => void;
-  toggleFavorite: (id: string) => void;
+  // Async Actions (SQLite)
+  loadNotes: (sortBy?: SortBy) => Promise<void>;
+  addNote: (formData: NoteFormData, userName: string) => Promise<void>;
+  updateNote: (id: string, formData: Partial<NoteFormData>) => Promise<void>;
+  deleteNote: (id: string) => Promise<void>;
+  toggleFavorite: (id: string) => Promise<void>;
   clearError: () => void;
 
-  // Selectors
+  // Selectors (memoria local)
   getNoteById: (id: string) => Note | undefined;
   getSortedNotes: (sortBy: SortBy) => Note[];
   getFavoriteNotes: () => Note[];
@@ -28,7 +30,21 @@ export const useNotesStore = create<NotesState>((set, get) => ({
   isLoading: false,
   error: null,
 
-  addNote: (formData, userName) => {
+  loadNotes: async (sortBy = "date") => {
+    set({ isLoading: true, error: null });
+    try {
+      const notes = await notesDao.getAllNotes(sortBy);
+      set({ notes, isLoading: false });
+    } catch (error) {
+      console.error("[NotesStore] Error loading notes:", error);
+      set({
+        error: "Error al cargar las notas",
+        isLoading: false,
+      });
+    }
+  },
+
+  addNote: async (formData, userName) => {
     const now = Date.now();
     const newNote: Note = {
       id: generateId(),
@@ -41,50 +57,76 @@ export const useNotesStore = create<NotesState>((set, get) => ({
       createdBy: userName,
     };
 
-    set((state) => ({
-      notes: [newNote, ...state.notes],
-    }));
+    try {
+      await notesDao.insertNote(newNote);
+      // Añadir a memoria local también
+      set((state) => ({
+        notes: [newNote, ...state.notes],
+      }));
+    } catch (error) {
+      console.error("[NotesStore] Error adding note:", error);
+      set({ error: "Error al crear la nota" });
+    }
   },
 
-  updateNote: (id, formData) => {
-    set((state) => ({
-      notes: state.notes.map((note) =>
-        note.id === id
-          ? {
-              ...note,
-              ...(formData.title !== undefined && {
-                title: formData.title.trim(),
-              }),
-              ...(formData.body !== undefined && {
-                body: formData.body.trim(),
-              }),
-              ...(formData.isFavorite !== undefined && {
-                isFavorite: formData.isFavorite,
-              }),
-              ...(formData.imageUrl !== undefined && {
-                imageUrl: formData.imageUrl,
-              }),
-              updatedAt: Date.now(),
-            }
-          : note
-      ),
-    }));
+  updateNote: async (id, formData) => {
+    const currentNote = get().notes.find((n) => n.id === id);
+    if (!currentNote) return;
+
+    const updatedNote: Note = {
+      ...currentNote,
+      ...(formData.title !== undefined && {
+        title: formData.title.trim(),
+      }),
+      ...(formData.body !== undefined && {
+        body: formData.body.trim(),
+      }),
+      ...(formData.isFavorite !== undefined && {
+        isFavorite: formData.isFavorite,
+      }),
+      ...(formData.imageUrl !== undefined && {
+        imageUrl: formData.imageUrl,
+      }),
+      updatedAt: Date.now(),
+    };
+
+    try {
+      await notesDao.updateNote(updatedNote);
+      set((state) => ({
+        notes: state.notes.map((note) => (note.id === id ? updatedNote : note)),
+      }));
+    } catch (error) {
+      console.error("[NotesStore] Error updating note:", error);
+      set({ error: "Error al actualizar la nota" });
+    }
   },
 
-  deleteNote: (id) => {
-    set((state) => ({
-      notes: state.notes.filter((note) => note.id !== id),
-    }));
+  deleteNote: async (id) => {
+    try {
+      await notesDao.deleteNote(id);
+      set((state) => ({
+        notes: state.notes.filter((note) => note.id !== id),
+      }));
+    } catch (error) {
+      console.error("[NotesStore] Error deleting note:", error);
+      set({ error: "Error al eliminar la nota" });
+    }
   },
 
-  toggleFavorite: (id) => {
-    set((state) => ({
-      notes: state.notes.map((note) =>
-        note.id === id
-          ? { ...note, isFavorite: !note.isFavorite, updatedAt: Date.now() }
-          : note
-      ),
-    }));
+  toggleFavorite: async (id) => {
+    try {
+      const updatedNote = await notesDao.toggleFavorite(id);
+      if (updatedNote) {
+        set((state) => ({
+          notes: state.notes.map((note) =>
+            note.id === id ? updatedNote : note
+          ),
+        }));
+      }
+    } catch (error) {
+      console.error("[NotesStore] Error toggling favorite:", error);
+      set({ error: "Error al cambiar favorito" });
+    }
   },
 
   clearError: () => set({ error: null }),
